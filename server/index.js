@@ -30,7 +30,7 @@ app.get('/api/description/:productId', (req, res) => {
 });
 
 //GET all
-app.get('/api/descriptions', (req, res) => {
+app.get('/api/description', (req, res) => {
   models.getAllItems()
       .then((items) => res.status(200).json(items))
       .catch(err => {
@@ -47,7 +47,6 @@ app.post('/api/description', (req, res) => {
     newItem.save((err, item) => {
       if (err) {
         console.log(err);
-        console.log('error with ', item)
       } else {
         console.log(item)
       }

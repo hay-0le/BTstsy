@@ -15,9 +15,14 @@
 1. [Requirements](#requirements)
 1. [Development](#development)
 
-## Usage
+## Usage (API routes)
 
-> Some usage instructions
+CRUD API ENDPOINTS                       DESCRIPTION
+GET      /api/description/:productId     Retrieves product description at productId
+GET      /api/description                Retrieves all product descriptions from the database
+POST     /api/description                Adds new product description into the database
+PUT      /api/description/:productId     Updates existing product description in the database at productId
+DELETE   /api/description/:productId     Deletes product description in the database at productId
 
 ## Requirements
 
