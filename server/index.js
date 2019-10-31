@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 
 app.get('/api/description/:productId', (req, res) => {
   const productId = req.params.productId;
-  // console.log(productId);
+
   models.getOneItem(productId)
     .then((value) => res.status(200).json(value))
     .catch((err) => {

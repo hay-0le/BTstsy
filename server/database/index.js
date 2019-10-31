@@ -15,4 +15,4 @@ let ItemDetailsSchema = mongoose.Schema({
   product: { productName: String, productDescription: String },
 });
 
-module.exports = mongoose.model('ItemDetails', ItemDetailsSchema, 'items');
+module.exports = mongoose.model('ItemDetails', ItemDetailsSchema);

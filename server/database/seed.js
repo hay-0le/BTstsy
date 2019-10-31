@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable func-names */
 const seedData = require('./SeedData.json');
-const { itemDetails } = require('./index.js');
+const ItemDetails = require('./index.js');
 
 const onInsert = function (err, docs) {
   if (err) {
@@ -10,4 +10,4 @@ const onInsert = function (err, docs) {
     console.info('%d item details were successfully stored.', docs.length);
   }
 };
-itemDetails.insertMany(seedData, onInsert);
+ItemDetails.insertMany(seedData, onInsert);
