@@ -24,10 +24,21 @@ app.get('/api/description/:productId', (req, res) => {
     .then((value) => res.status(200).json(value))
     .catch((err) => {
       console.log(err);
-      res.status(404)
+      res.status(404);
       res.send('Product not found');
     });
 });
+
+//GET all
+app.get('/api/descriptions', (req, res) => {
+  models.getAllItems()
+      .then((items) => res.status(200).json(items))
+      .catch(err => {
+        console.log(err);
+        res.status(404);
+        res.send("Did not retrieve items");
+      })
+})
 
 //POST
 app.post('/api/description', (req, res) => {

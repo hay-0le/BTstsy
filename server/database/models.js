@@ -6,6 +6,12 @@ const getOneItem = function (productId) {
 
 };
 
+const getAllItems = function () {
+  console.log('hi')
+  return ItemDetails.find();
+}
+
 module.exports = {
   getOneItem,
+  getAllItems,
 };
