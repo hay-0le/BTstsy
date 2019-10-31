@@ -11,7 +11,17 @@ const getAllItems = function () {
   return ItemDetails.find();
 }
 
+const updateItem = function (productId, update) {
+  const results = ItemDetails.updateOne(
+    { productId },
+    update,
+    { upsert: false }
+  )
+  return results;// console.log('results: ', results);
+}
+
 module.exports = {
   getOneItem,
   getAllItems,
+  updateItem,
 };
