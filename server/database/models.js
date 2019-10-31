@@ -7,7 +7,6 @@ const getOneItem = function (productId) {
 };
 
 const getAllItems = function () {
-  console.log('hi')
   return ItemDetails.find();
 }
 
@@ -20,8 +19,14 @@ const updateItem = function (productId, update) {
   return results;// console.log('results: ', results);
 }
 
+const deleteItem = function (productId) {
+  const result = ItemDetails.deleteOne({ productId });
+  return result;
+}
+
 module.exports = {
   getOneItem,
   getAllItems,
   updateItem,
+  deleteItem,
 };

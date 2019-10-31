@@ -68,8 +68,7 @@ app.put('/api/description/:productId', (req, res) => {
   models.updateItem(id, req.body)
     .then(results => {
       res.send(results);
-      console.log('updates: ', results)
-      // res.status(200).json(results);
+      res.status(200)
 
     }).catch(err => {
       console.log(err)
@@ -80,6 +79,17 @@ app.put('/api/description/:productId', (req, res) => {
 })
 
 //DELETE
+app.delete('/api/description/:productId', (req, res) => {
+  models.deleteItem(req.params.productId)
+    .then(results => {
+      res.send(results);
+
+    }).catch(err => {
+      console.log(err)
+      res.status(500);
+      res.send('Item not deleted')
+    })
+})
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
