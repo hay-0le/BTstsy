@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost/BTetsy', { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((error) => error);
-const itemDetailsSchema = new mongoose.Schema({
+
+let ItemDetailsSchema = mongoose.Schema({
   vendorName: String,
   vendorFirstName: String,
   vendorCountry: String,
@@ -14,8 +15,4 @@ const itemDetailsSchema = new mongoose.Schema({
   product: { productName: String, productDescription: String },
 });
 
-const itemDetails = mongoose.model('itemDetails', itemDetailsSchema);
-
-module.exports = {
-  itemDetails,
-};
+module.exports = mongoose.model('ItemDetails', ItemDetailsSchema, 'items');

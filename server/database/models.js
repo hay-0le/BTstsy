@@ -1,8 +1,8 @@
-const { itemDetails } = require('./index.js');
+const { ItemDetails } = require('./index.js');
 
 // eslint-disable-next-line func-names
 const getOneItem = function (productId) {
-  return itemDetails.findOne({ productId });
+  return ItemDetails.findOne({ productId });
 };
 
 // var getOneItem = async function() {
