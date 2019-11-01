@@ -18,16 +18,27 @@ app.use((req, res, next) => {
 
 
 app.get('/api/description/:productId', (req, res) => {
-  const productId = req.params.productId;
+  const id = req.params.productId;
 
-  models.getOneItem(productId)
+  models.getOneItem(id)
     .then((value) => res.status(200).json(value))
     .catch((err) => {
       console.log(err);
-      res.status(404)
+      res.status(404);
       res.send('Product not found');
     });
 });
+
+//GET all
+app.get('/api/description', (req, res) => {
+  models.getAllItems()
+      .then((items) => res.status(200).json(items))
+      .catch(err => {
+        console.log(err);
+        res.status(404);
+        res.send("Did not retrieve items");
+      })
+})
 
 //POST
 app.post('/api/description', (req, res) => {
@@ -36,7 +47,6 @@ app.post('/api/description', (req, res) => {
     newItem.save((err, item) => {
       if (err) {
         console.log(err);
-        console.log('error with ', item)
       } else {
         console.log(item)
       }
@@ -51,8 +61,34 @@ app.post('/api/description', (req, res) => {
 })
 
 //PUT
+app.put('/api/description/:productId', (req, res) => {
+  const id = req.params.productId;
+
+  models.updateItem(id, req.body)
+    .then(results => {
+      res.send(results);
+      res.status(200)
+
+    }).catch(err => {
+      console.log(err)
+      res.status(500);
+      res.send('Item not updated');
+    })
+
+})
 
 //DELETE
+app.delete('/api/description/:productId', (req, res) => {
+  models.deleteItem(req.params.productId)
+    .then(results => {
+      res.send(results);
+
+    }).catch(err => {
+      console.log(err)
+      res.status(500);
+      res.send('Item not deleted')
+    })
+})
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
