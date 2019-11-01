@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/BTetsy', { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((error) => error);
 
+const db = mongoose.connection;
+
 let ItemDetailsSchema = mongoose.Schema({
   vendorName: String,
   vendorFirstName: String,
@@ -15,4 +17,9 @@ let ItemDetailsSchema = mongoose.Schema({
   product: { productName: String, productDescription: String },
 });
 
-module.exports = mongoose.model('ItemDetails', ItemDetailsSchema);
+const ItemDetails = mongoose.model('ItemDetails', ItemDetailsSchema);
+
+module.exports = {
+  ItemDetails,
+  db
+}
