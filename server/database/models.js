@@ -1,4 +1,4 @@
-const ItemDetails = require('./index.js');
+const { ItemDetails } = require('./index.js');
 
 // eslint-disable-next-line func-names
 const getOneItem = function (productId) {
@@ -7,7 +7,10 @@ const getOneItem = function (productId) {
 };
 
 const getAllItems = function () {
-  return ItemDetails.find();
+  return ItemDetails.find()
+  .catch(err => {
+    console.log(err)
+  });
 }
 
 const updateItem = function (productId, update) {
