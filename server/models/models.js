@@ -1,4 +1,4 @@
-const { ItemDetails } = require('./index.js');
+const { ItemDetails } = require('../database/index.js');
 
 // eslint-disable-next-line func-names
 const getOneItem = function (productId) {
