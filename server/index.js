@@ -2,13 +2,16 @@ const express = require('express');
 const models = require('./models/models.js');
 const ItemDetails = require('./database/index.js');
 
+const { Pool} = require('pg');
+const connectionString = 'postgressql://postgres:root@localhost:5432/itemsdb';
+
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public'));
-const port = 4444;
+const port = 5555;
 app.use((req, res, next) => {
   res.append('Access-Control-Allow-Origin', ['*']);
   res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -17,20 +20,26 @@ app.use((req, res, next) => {
 });
 
 
-app.get('/api/description/:productId', (req, res) => {
-  const id = req.params.productId;
+app.get('/api/description/:productId', models.getOneItem);
+//   const id = req.params.productId;
+// console.log('getting id: ', id);
 
-  models.getOneItem(id)
-    .then((value) => res.status(200).json(value))
-    .catch((err) => {
-      console.log(err);
-      res.status(404);
-      res.send('Product not found');
-    });
-});
+
+
+
+
+// models.getOneItem(id)
+  //   .then((value) => res.status(200).json(value))
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.status(404);
+  //     res.send('Product not found');
+  //   });
+// );
 
 //GET all
 app.get('/api/description', (req, res) => {
+  console.log('wrong get')
   models.getAllItems()
       .then((items) => res.status(200).json(items))
       .catch(err => {
