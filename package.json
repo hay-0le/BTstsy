@@ -9,10 +9,10 @@
   },
   "scripts": {
     "start": "nodemon server/index.js",
-    "seed": "node --max-old-space-size=12288 ./server/database/seed.js",
+    "seed": "node --max_old_space_size=12288 ./server/database/seed.js",
     "test": "jest",
     "build": "webpack -d --watch",
-    "pg": "node server/database/pg.js"
+    "pg": "node --max_old_space_size=12288 server/database/pg.js"
   },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.6.2",

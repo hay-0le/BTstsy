@@ -12,7 +12,7 @@ const writeStream = fs.createWriteStream('data.csv');
 
 console.time('10,000,000 docs loaded');
 function csvLoader(writer, encoding, cb) {
-  let i = 10;
+  let i = 10000000;
 
   function seed() {
     let ok = true;
@@ -23,25 +23,22 @@ function csvLoader(writer, encoding, cb) {
         'vendorName': faker.company.companyName(),
         'vendorFirstName': faker.name.firstName(),
         'vendorCountry': faker.address.country(),
-        'shopPolicies': {
-          'returnsAndExchange': faker.lorem.paragraph(),
-          'shippingPolicies': faker.lorem.paragraph(),
-          'additionalPolicies': faker.lorem.paragraph()
-        },
-        'faq': [
-          {'question': faker.lorem.sentence(),
-          'answer': faker.lorem.sentence() }
-        ],
+        'returnsAndExchange': faker.lorem.paragraph().slice(0, 198),
+        'shippingPolicies': faker.lorem.paragraph().slice(0, 198),
+        'additionalPolicies': faker.lorem.paragraph().slice(0, 198),
+        'question': faker.lorem.sentence().slice(0, 99),
+        'answer': faker.lorem.sentence().slice(0,99),
         'vendorPhoto': 'https://loremflickr.com/320/240/dog',
         'vendorReponseTime': Math.floor(Math.random()* 30) + ' days',
         'productId': i,
-        'product': {'productName': faker.commerce.productName(),
-            'productDescription': faker.lorem.sentences()}
+        'productName': faker.commerce.productName(),
+        'productDescription': faker.lorem.sentences().slice(0, 99)
         }
       let parser = undefined;
 
-      if (i === 10) {
-        parser = new Parser({header: true, flatten: true})
+      if (i === 10000000) {
+        parser = new Parser({header: false, flatten: true})
+
       } else {
         parser = new Parser({header: false, flatten: true});
       }
@@ -51,9 +48,12 @@ function csvLoader(writer, encoding, cb) {
       i -= 1;
 
       if (i === 0) {
+        console.log(process.memoryUsage());
+        console.log('done loading csv data')
+        console.timeEnd('10,000,000 docs loaded');
         writer.write(csvDetails, encoding, cb)
       } else {
-        ok = writer.write(csvDetails, encoding)
+        ok = writer.write(csvDetails + '\n', encoding)
       }
 
     } while ( i > 0 && ok);
@@ -64,13 +64,12 @@ function csvLoader(writer, encoding, cb) {
     }
   }
   seed();
+
 }
 csvLoader(writeStream, 'utf-8', () => {
   writeStream.end();
-  console.log(process.memoryUsage());
-  console.log('done loading csv data')
-  console.timeEnd('10,000,000 docs loaded');
 })
+
 
 
 
