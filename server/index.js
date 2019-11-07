@@ -2,10 +2,6 @@ const express = require('express');
 const models = require('./models/models.js');
 const ItemDetails = require('./database/index.js');
 
-const { Pool} = require('pg');
-const connectionString = 'postgressql://postgres:root@localhost:5432/itemsdb';
-
-
 const app = express();
 
 app.use(express.json());
@@ -22,11 +18,6 @@ app.use((req, res, next) => {
 
 app.get('/api/description/:productId', models.getOneItem);
 //   const id = req.params.productId;
-// console.log('getting id: ', id);
-
-
-
-
 
 // models.getOneItem(id)
   //   .then((value) => res.status(200).json(value))

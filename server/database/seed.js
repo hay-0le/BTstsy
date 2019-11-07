@@ -4,13 +4,10 @@ const faker = require('faker');
 const { Parser } = require('json2csv');
 // const csv = require('csvtojson');
 
-const { ItemDetails } = require('./index.js');
-const { db } = require('./index.js');
-
-
 const writeStream = fs.createWriteStream('data.csv');
 
 console.time('10,000,000 docs loaded');
+
 function csvLoader(writer, encoding, cb) {
   let i = 10000000;
 
@@ -18,30 +15,27 @@ function csvLoader(writer, encoding, cb) {
     let ok = true;
 
     do {
-
       let item = {
-        'vendorName': faker.company.companyName(),
-        'vendorFirstName': faker.name.firstName(),
-        'vendorCountry': faker.address.country(),
-        'returnsAndExchange': faker.lorem.paragraph().slice(0, 198),
-        'shippingPolicies': faker.lorem.paragraph().slice(0, 198),
-        'additionalPolicies': faker.lorem.paragraph().slice(0, 198),
-        'question': faker.lorem.sentence().slice(0, 99),
-        'answer': faker.lorem.sentence().slice(0,99),
-        'vendorPhoto': 'https://loremflickr.com/320/240/dog',
-        'vendorReponseTime': Math.floor(Math.random()* 30) + ' days',
-        'productId': i,
-        'productName': faker.commerce.productName(),
-        'productDescription': faker.lorem.sentences().slice(0, 99)
-        }
-      let parser = undefined;
-
-      if (i === 10000000) {
-        parser = new Parser({header: false, flatten: true})
-
-      } else {
-        parser = new Parser({header: false, flatten: true});
+        vendorName: faker.company.companyName(),
+        vendorFirstName: faker.name.firstName(),
+        vendorCountry: faker.address.country(),
+        vendorPhoto: 'https://loremflickr.com/320/240/dog',
+        vendorResponseTime: Math.floor(Math.random()* 30) + ' days',
+        productId: i,
+        productName: faker.commerce.productName(),
+        productDescription: faker.lorem.sentences().slice(0, 99),
+        policies : JSON.stringify([{shippingpolicy: faker.lorem.paragraph().slice(0, 70)}, {returnpolicy: faker.lorem.paragraph().slice(0, 40)}, {additionalpolicies: faker.lorem.paragraph().slice(0, 60)}]),
+        faq: JSON.stringify([{question: faker.lorem.sentence().slice(0, 30)}, {answer: faker.lorem.sentence().slice(0,30)}])
       }
+
+      let parser = new Parser({header: false});
+
+      // if (i === 10000000) {
+      //   parser = new Parser({header: false, flatten: true})
+
+      // } else {
+      //   parser = new Parser({header: false, flatten: true});
+      // }
 
       const csvDetails = parser.parse(item);
 
@@ -64,12 +58,8 @@ function csvLoader(writer, encoding, cb) {
     }
   }
   seed();
-
 }
+
 csvLoader(writeStream, 'utf-8', () => {
   writeStream.end();
 })
-
-
-
-

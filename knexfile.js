@@ -1,30 +1,14 @@
-// require('dotenv').config();
+require('dotenv').config();
 
-// module.exports = {
-//   development: {
-//     client: 'pg',
-//     connection: process.env.DB_URL,
-//     migrations: {
-//       directory: './data/migrations',
-//     },
-//     seeds: { directory: './data/seeds' },
-//   },
-
-//   testing: {
-//     client: 'pg',
-//     connection: process.env.DB_URL,
-//     migrations: {
-//       directory: './data/migrations',
-//     },
-//     seeds: { directory: './data/seeds' },
-//   },
-
-//   production: {
-//     client: 'pg',
-//     connection: process.env.DB_URL,
-//     migrations: {
-//       directory: './data/migrations',
-//     },
-//     seeds: { directory: './data/seeds' },
-//   },
-// };
+module.exports = {
+  test: {
+    client: 'pg',
+    connection: 'postgressql://postgres:root@localhost:5432/itemsdb',
+    migrations: {
+        directory: __dirname + '/migrations'
+    },
+    seeds: {
+        directory: __dirname + '/seeds/test'
+    }
+},
+};

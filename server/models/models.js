@@ -3,21 +3,14 @@ const { Pool } = require('pg');
 const connectionString = 'postgressql://postgres:root@localhost:5432/itemsdb';
 
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'itemsdb',
-  password: 'root',
-  port: 5432
+  connectionString: connectionString
 });
-
-
 
 // eslint-disable-next-line func-names
 const getOneItem = (req, res) => {
   const id = req.params.productId;
-console.log(id)
+
   pool.query('SELECT * FROM items WHERE productid = $1',  [id], (err, results) => {
-    console.log('here i am')
     if (err) {
       throw err
     }
