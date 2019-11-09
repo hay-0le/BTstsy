@@ -25,6 +25,7 @@ function csvLoader(writer, encoding, cb) {
         productName: faker.commerce.productName(),
         productDescription: faker.lorem.sentences().slice(0, 99),
         policies : JSON.stringify([{shippingpolicy: faker.lorem.paragraph().slice(0, 70)}, {returnpolicy: faker.lorem.paragraph().slice(0, 40)}, {additionalpolicies: faker.lorem.paragraph().slice(0, 60)}]),
+
         faq: JSON.stringify([{question: faker.lorem.sentence().slice(0, 30)}, {answer: faker.lorem.sentence().slice(0,30)}])
       }
 

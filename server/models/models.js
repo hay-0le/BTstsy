@@ -10,11 +10,13 @@ const pool = new Pool({
 const getOneItem = (req, res) => {
   const id = req.params.productId;
 
+  console.time(`Query for item #${id}`);
   pool.query('SELECT * FROM items WHERE productid = $1',  [id], (err, results) => {
     if (err) {
-      throw err
+      console.log("Pool query error: ", err)
     }
     res.status(200).json(results.rows)
+    console.timeEnd(`Query for item #${id}`);
   })
 }
 

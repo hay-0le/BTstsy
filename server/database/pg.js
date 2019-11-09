@@ -10,16 +10,18 @@ const pool = new Pool({
 
 pool.connect((err, client, done)=> {
 
-  const stream = client.query(copyFrom('COPY items FROM STDIN CSV'));
+  const pgStream = client.query(copyFrom('COPY items FROM STDIN CSV'));
   const fileStream = fs.createReadStream('./data.csv');
 
   fileStream.on('error', (error) => {
-    console.log(`Error on fileStream: ${error}`)});
+    console.log(`Error on fileStream: ${error}`)
+  });
 
-  stream.on('error', (error) => {
-    console.log(`Error on stream: ${error}`)});
+  pgStream.on('error', (error) => {
+    console.log(`Error on stream: ${error}`)
+  });
 
-  stream.on('end',() => {
+  pgStream.on('end',() => {
     console.log('Stream ended')
   });
 
