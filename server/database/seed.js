@@ -1,67 +1,66 @@
 
-const mongoose = require('mongoose');
 const fs = require('fs');
 const faker = require('faker');
 const { Parser } = require('json2csv');
-const csv = require('csvtojson');
-const papa = require('papaparse');
-const csvWriter = require('csv-write-stream');
-const writer = csvWriter();
+// const csv = require('csvtojson');
 
-const { ItemDetails } = require('./index.js');
-const { db } = require('./index.js');
+const writeStream = fs.createWriteStream('data.csv');
 
-const newItem = function (num) {
-  this.vendorName = faker.company.companyName(),
-  this.vendorFirstName = faker.name.firstName(),
-  this.vendorCountry = faker.address.country(),
-  this.shopPolicies = {
-    returnsAndExchange: faker.lorem.paragraph(),
-    shippingPolicies: faker.lorem.paragraph(),
-    additionalPolicies: faker.lorem.paragraph()
-  },
-  this.faq = [
-    {question: faker.lorem.sentence(),
-    answer: faker.lorem.sentence() }
-  ],
-  this.vendorPhoto = `https://picsum.photos/id/${Math.floor(Math.random()*200)}/200/300`,
-  this.vendorReponseTime = Math.floor(Math.random()* 30) + ' days',
-  this.productId = num ,
-  this.product = {productName: faker.commerce.productName(),
-      productDescription: faker.lorem.sentences()}
-}
+console.time('10,000,000 docs loaded');
 
-// db.dropDatabase();
-// const docs = [];
+function csvLoader(writer, encoding, cb) {
+  let i = 10000000;
 
-const dataToCSV = () => {
-  writer.pipe(fs.createWriteStream('data.csv', { encoding: 'utf8' }));
+  function seed() {
+    let ok = true;
 
-  for (var i = 0; i < 1; i++) {
-    const item = new newItem(i);
-    const details = new ItemDetails(item);
-    console.log(details)
+    do {
+      let item = {
+        vendorName: faker.company.companyName(),
+        vendorFirstName: faker.name.firstName(),
+        vendorCountry: faker.address.country(),
+        vendorPhoto: 'https://loremflickr.com/320/240/dog',
+        vendorResponseTime: Math.floor(Math.random()* 30) + ' days',
+        productId: i,
+        productName: faker.commerce.productName(),
+        productDescription: faker.lorem.sentences().slice(0, 99),
+        policies : JSON.stringify([{shippingpolicy: faker.lorem.paragraph().slice(0, 70)}, {returnpolicy: faker.lorem.paragraph().slice(0, 40)}, {additionalpolicies: faker.lorem.paragraph().slice(0, 60)}]),
 
-    const fields = ["vendorName", "vendorFirstName", "vendorCountry", "shopPolicies.returnsAndExchange", "shopPolicies.shippingPolicies", "shopPolicies.additionalPolicies", "faq.question", "faq.answer", "vendorPhoto", "vendorReponseTime", "productId", "product.productName", "product.productDescription"]
-    const parser = new Parser({ fields });
-    const csvDetails = parser.parse([details])
-  //   csv({
-  //     noheader:true,
-  //     output: "csv"
-  // })
-  // .fromString(csvDetails)
-  // .then((csvRow)=>{
-  //     console.log(csvRow) "9"]]
-  // })
-     writer.write(csvDetails);
+        faq: JSON.stringify([{question: faker.lorem.sentence().slice(0, 30)}, {answer: faker.lorem.sentence().slice(0,30)}])
+      }
+
+      let parser = new Parser({header: false});
+
+      // if (i === 10000000) {
+      //   parser = new Parser({header: false, flatten: true})
+
+      // } else {
+      //   parser = new Parser({header: false, flatten: true});
+      // }
+
+      const csvDetails = parser.parse(item);
+
+      i -= 1;
+
+      if (i === 0) {
+        console.log(process.memoryUsage());
+        console.log('done loading csv data')
+        console.timeEnd('10,000,000 docs loaded');
+        writer.write(csvDetails, encoding, cb)
+      } else {
+        ok = writer.write(csvDetails + '\n', encoding)
+      }
+
+    } while ( i > 0 && ok);
+
+    if (i > 0) {
+
+      writer.once('drain', seed)
+    }
   }
-  writer.end();
-  console.log('Data generated to csv')
+  seed();
 }
-dataToCSV();
-// console.time('10M docs loaded');
-// for (var j = 0; j < docs.length; j+= 100) {
 
-//   ItemDetails.insertMany(docs.slice(j, j + 100))
-// }
-// console.timeEnd('10M docs loaded');
+csvLoader(writeStream, 'utf-8', () => {
+  writeStream.end();
+})
