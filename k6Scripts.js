@@ -16,11 +16,3 @@ export default function() {
 
 //POST to add an item
 
-
-
-// // GET Request
-// export default function() {
-//   var i = Math.floor(Math.random() * 10000000);
-//   http.get(`http://localhost:1234/api/checkout/${i}/details`);
-//   sleep(0);
-// }
