@@ -33,6 +33,36 @@ pool.connect((err, client, done)=> {
     console.timeEnd('Items loaded into PG database');
   })
 })
-                    //   CREATE TABLE items (
-                    //     vendorName VARCHAR, vendorFirstName VARCHAR, vendorCountry VARCHAR, shopPolicies VARCHAR, faq VARCHAR, vendorPhoto VARCHAR, vendorResponseTime VARCHAR, productId INT PRIMARY KEY, product VARCHAR);
-                    // `
+
+
+// -- Table: public.items
+
+// -- DROP TABLE public.items;
+
+// CREATE TABLE public.items
+// (
+//     vendor character varying(100) COLLATE pg_catalog."default",
+//     vendorname character varying(100) COLLATE pg_catalog."default",
+//     vendorcountry character varying(100) COLLATE pg_catalog."default",
+//     vendorphoto character varying(100) COLLATE pg_catalog."default",
+//     responsetime character varying(50) COLLATE pg_catalog."default",
+//     productid integer NOT NULL,
+//     productname character varying(100) COLLATE pg_catalog."default",
+//     productdescription character varying(200) COLLATE pg_catalog."default",
+//     policies character varying(250) COLLATE pg_catalog."default",
+//     faq character varying(250) COLLATE pg_catalog."default"
+// )
+
+// TABLESPACE pg_default;
+
+// ALTER TABLE public.items
+//     OWNER to postgres;
+
+// -- Index: index_id
+
+// -- DROP INDEX public.index_id;
+
+// CREATE INDEX index_id
+//     ON public.items USING btree
+//     (productid)
+//     TABLESPACE pg_default;
