@@ -5,12 +5,19 @@ import ShopPolicies from './ShopPolicies.jsx';
 import FaqList from './FaqList.jsx';
 import Messages from './Messages.jsx';
 import sampleData from '../sampleData.js';
+import { LRUCache } from '../../LRUcache.js';
+
+
 
 function App() {
   const sample = sampleData.sampleData[1];
   const [description, getDescription] = useState(sample.productid, sample.productdescription);
   const [data, setData] = useState(sample);
 
+  //cache to hold top 25 most recently searched queries
+  const [cache, setCache] = useState(new LRUCache(25));
+
+  console.log("First time", cache)
 
 
   function getProductId() {
@@ -19,18 +26,30 @@ function App() {
   }
 
 
-
   async function fetchData(productId) {
-    const res = await axios.get(`/api/description/${productId}`);
-    const tempData = res.data;
-    console.log("TEMPDATA", tempData[0])
-    setData(tempData[0]);
-  }
-  useEffect(() => {
-    const Id = getProductId();
-    fetchData(Id);
 
-  }, []);
+    const res = await axios.get(`/api/description/${productId}`);
+    const tempData = res.data[0];
+
+    console.log("hellooo", cache)
+    ;
+    let updatedCache = cache.set(productId, tempData);
+    console.log(updatedCache);
+    setCache(updatedCache);
+    console.log("after cached", cache)
+    setData(tempData);
+
+
+  }
+
+    useEffect(() => {
+      const Id = getProductId();
+      fetchData(Id);
+
+    }, []);
+
+
+
   return (
     <div>
       <div>
