@@ -23,20 +23,12 @@ function csvLoader(writer, encoding, cb) {
         vendorResponseTime: Math.floor(Math.random()* 30) + ' days',
         productId: i,
         productName: faker.commerce.productName(),
-        productDescription: faker.lorem.sentences().slice(0, 99),
-        policies : JSON.stringify([{shippingpolicy: faker.lorem.paragraph().slice(0, 70)}, {returnpolicy: faker.lorem.paragraph().slice(0, 40)}, {additionalpolicies: faker.lorem.paragraph().slice(0, 60)}]),
-
-        faq: JSON.stringify([{question: faker.lorem.sentence().slice(0, 30)}, {answer: faker.lorem.sentence().slice(0,30)}])
+        productDescription: faker.lorem.paragraph().slice(0, 170),
+        policies : JSON.stringify([{shippingpolicy: faker.lorem.paragraph().slice(0, 70)}, {returnpolicy: faker.lorem.paragraph().slice(0, 80)}, {additionalpolicies: faker.lorem.paragraph().slice(0, 90)}]),
+        faq: JSON.stringify([{question: faker.lorem.sentence().slice(0, 20)}, {answer: faker.lorem.sentence().slice(0,60)}])
       }
 
       let parser = new Parser({header: false});
-
-      // if (i === 10000000) {
-      //   parser = new Parser({header: false, flatten: true})
-
-      // } else {
-      //   parser = new Parser({header: false, flatten: true});
-      // }
 
       const csvDetails = parser.parse(item);
 
