@@ -1,4 +1,40 @@
 // const { ItemDetails } = require('../database/index.js');
+
+// // eslint-disable-next-line func-names
+// const getOneItem = function (productId) {
+//   console.log("In get one item")
+//   return ItemDetails.findOne({ productId });
+
+// };
+
+// const getAllItems = function () {
+//   return ItemDetails.find();
+// }
+
+// const updateItem = function (productId, update) {
+//   const results = ItemDetails.updateOne(
+//     { productId },
+//     update,
+//     { upsert: false }
+//   )
+//   return results;// console.log('results: ', results);
+// }
+
+// const deleteItem = function (productId) {
+//   const result = ItemDetails.deleteOne({ productId });
+//   return result;
+// }
+
+// module.exports = {
+//   getOneItem,
+//   getAllItems,
+//   updateItem,
+//   deleteItem,
+// };
+
+
+
+// const { ItemDetails } = require('../database/index.js');
 const { Pool } = require('pg');
 const connectionString = 'postgressql://postgres:root@localhost:5432/itemsdb';
 
@@ -6,7 +42,6 @@ const pool = new Pool({
   connectionString: connectionString
 });
 
-// Retrieve one item
 const getOneItem = (req, res) => {
   const id = req.params.productId;
 
@@ -50,10 +85,6 @@ const addItem = (req, res) => {
 
 }
 
-
-
-
-
 //Update one item
 const updateItem = (req, res)=> {
   const productId = req.params.productId;
@@ -68,9 +99,16 @@ const updateItem = (req, res)=> {
 }
 
 //Delete one item
-const deleteItem = (productId) => {
-  const result = ItemDetails.deleteOne({ productId });
-  return result;
+const deleteItem = (req, res) => {
+  const id = req.params.productId;
+
+  pool.query('DELETE FROM items WHERE productid = $1',  [id], (err, results) => {
+    if (err) {
+      res.status(404).send('Pool query error deleting item: ', err)
+    }
+    res.status(200).json(results)
+
+  })
 }
 
 module.exports = {
@@ -81,5 +119,3 @@ module.exports = {
   deleteItem,
 };
 
-
-//change workman in config file to 4 gb, remove #
