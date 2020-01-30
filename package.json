@@ -9,11 +9,11 @@
   },
   "scripts": {
     "start": "nodemon --max_old_space_size=12288 server/index.js",
-    "seed": "node --max_old_space_size=12288 ./server/database/seed.js",
-    "test": "jest",
     "build": "webpack -d --watch",
-    "pg": "node --max_old_space_size=12288 server/database/pg.js",
-    "k6": "k6 run -u 5 -d 15s k6Scripts.js"
+    "seed-csv": "node --max_old_space_size=12288 ./server/database/seed.js",
+    "seed-db": "node --max_old_space_size=12288 server/database/pg.js",
+    "test": "jest",
+    "k6": "k6 run k6Scripts.js"
   },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.6.2",
