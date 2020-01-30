@@ -1,7 +1,5 @@
 const express = require('express');
 const models = require('./models/models.js');
-const ItemDetails = require('./database/index.js');
-
 
 const app = express();
 
