@@ -1,18 +1,33 @@
-import { check } from "k6";
+import { sleep, check } from "k6";
 import http from "k6/http";
+import { Rate, Counter } from "k6/metrics";
+// require('dotenv').config();
 
-//GET for 'main page'
-export default function() {
-  let res = http.get("http://localhost:5555");
-  console.log(res)
-  check(res, {
-    "is status 200": (r) => r.status === 200
-  });
-};
+const port = 4444;
+export let errorRate = new Rate("errors");
 
-//GET to retrieve last item in db
+export const options = {
+  stages: [
+    { duration: "30s", target: 100 },
+    { duration: "30s", target: 500 },
+    { duration: "1m", target: 100 },
+    { duration: "30s", target: 10 },
+  ],
+  thresholds: {
+    //stops test if error rate exceeds 10%
+    "errors": ["rate<0.1"]
+  }
+}
 
 //GET to retreive random productid from db
+export default function() {
+  let randomId = Math.floor(Math.random() * 10000000) + 1;
 
-//POST to add an item
+  let res = http.get(`http://localhost:${port}/?${randomId}`);
+
+  check(res, {
+    "Status is 200": (r) => r.status === 200
+  }) || errorRate.add(1);
+};
+
 
