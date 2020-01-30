@@ -1,40 +1,3 @@
-// const { ItemDetails } = require('../database/index.js');
-
-// // eslint-disable-next-line func-names
-// const getOneItem = function (productId) {
-//   console.log("In get one item")
-//   return ItemDetails.findOne({ productId });
-
-// };
-
-// const getAllItems = function () {
-//   return ItemDetails.find();
-// }
-
-// const updateItem = function (productId, update) {
-//   const results = ItemDetails.updateOne(
-//     { productId },
-//     update,
-//     { upsert: false }
-//   )
-//   return results;// console.log('results: ', results);
-// }
-
-// const deleteItem = function (productId) {
-//   const result = ItemDetails.deleteOne({ productId });
-//   return result;
-// }
-
-// module.exports = {
-//   getOneItem,
-//   getAllItems,
-//   updateItem,
-//   deleteItem,
-// };
-
-
-
-// const { ItemDetails } = require('../database/index.js');
 const { Pool } = require('pg');
 const connectionString = 'postgressql://postgres:root@localhost:5432/itemsdb';
 
@@ -42,6 +5,7 @@ const pool = new Pool({
   connectionString: connectionString
 });
 
+//Retrieve item by productid
 const getOneItem = (req, res) => {
   const id = req.params.productId;
 
@@ -54,6 +18,7 @@ const getOneItem = (req, res) => {
     console.timeEnd(`Query for item #${id}`);
   })
 }
+
 
 //Retrieve all items
 const getAllItems = (req, res) => {
@@ -68,6 +33,8 @@ const getAllItems = (req, res) => {
   })
 }
 
+
+//Post/create a new item and save to the database
 const addItem = (req, res) => {
   const item = req.body;
 
@@ -85,7 +52,8 @@ const addItem = (req, res) => {
 
 }
 
-//Update one item
+
+//Update one item's information
 const updateItem = (req, res)=> {
   const productId = req.params.productId;
   const update = req.body.update;
