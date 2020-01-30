@@ -1,0 +1,45 @@
+------ If table already exists, drop, then create items
+
+/DROP TABLE public.items;
+
+CREATE TABLE public.items
+(
+    vendor character varying(100) COLLATE pg_catalog."default",
+    vendorname character varying(100) COLLATE pg_catalog."default",
+    vendorcountry character varying(100) COLLATE pg_catalog."default",
+    vendorphoto character varying(100) COLLATE pg_catalog."default",
+    responsetime character varying(50) COLLATE pg_catalog."default",
+    productid integer NOT NULL,
+    productname character varying(100) COLLATE pg_catalog."default",
+    productdescription character varying(200) COLLATE pg_catalog."default",
+    policies character varying(250) COLLATE pg_catalog."default",
+    faq character varying(250) COLLATE pg_catalog."default"
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.items
+    OWNER to postgres;
+
+-- Index: index_id
+
+
+------- drop index on product id
+-- DROP INDEX public.index_id;
+
+
+-------- create index on product id
+CREATE UNIQUE INDEX index_id
+    ON public.items USING btree
+    (productid)
+    TABLESPACE pg_default;
+
+
+------ remove dupllicates of keys
+DELETE FROM items a USING (
+  SELECT MIN(ctid) as ctid, productid
+    FROM items
+    GROUP BY productid HAVING COUNT(*) > 1
+  ) b
+  WHERE a.productid = b.productid
+  AND a.ctid <> b.ctid
