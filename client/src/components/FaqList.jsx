@@ -6,6 +6,10 @@ import {
 import FaqEntry from './FaqEntry.jsx';
 
 const FaqList = ({ faqList }) => {
+  if (typeof faqList === 'string') {
+    faqList = JSON.parse(faqList)
+  }
+
   const [toggle, setToggle] = useState(true);
   return (
     <div>
@@ -23,7 +27,7 @@ const FaqList = ({ faqList }) => {
 };
 
 FaqList.propTypes = {
-  faqList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  // faqList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
 };
 
 export default FaqList;

@@ -6,7 +6,12 @@ import {
 
 
 const ShopPolicies = ({ policies, country }) => {
+  if (typeof policies === 'string') {
+    policies = JSON.parse(policies);
+  }
+
   const [toggle, setToggle] = useState(true);
+
   const [ReturnsAndExchanges, setReturnsAndExchanges] = useState(true);
   const [AdditionalPolicies, setAdditionalPolicies] = useState(true);
   const [PaymentInfo, setPaymentInfo] = useState(true);
@@ -42,7 +47,7 @@ Returns and exchanges accepted
               <TitleText>Returns and exchanges</TitleText>
               <div />
               {' '}
-              {ReturnsAndExchanges ? policies.returnsAndExchange.slice(0, ((policies.returnsAndExchange.length) / 2)) : policies.returnsAndExchange}
+              {ReturnsAndExchanges ? policies[1].returnpolicy.slice(0, ((policies[1].returnpolicy.length) / 2)) : policies[1].returnpolicy}
               {' '}
             </div>
             <div />
@@ -55,13 +60,13 @@ Returns and exchanges accepted
             <TitleText>Shipping policies</TitleText>
             <div />
             <div>
-              {policies.shippingPolicies}
+              {policies[0].shippingpolicy}
             </div>
             <div>
               <TitleText> Payment info </TitleText>
               <div />
               {' '}
-              {PaymentInfo ? policies.returnsAndExchange.slice(0, ((policies.returnsAndExchange.length) / 2)) : policies.returnsAndExchange}
+              {PaymentInfo ?  policies[1].returnpolicy.slice(0, (( policies[1].returnpolicy.length) / 2)) :  policies[1].returnpolicy}
               {' '}
             </div>
             <div />
@@ -75,7 +80,7 @@ Returns and exchanges accepted
               <TitleText> Additional policies </TitleText>
               <div />
               {' '}
-              {AdditionalPolicies ? policies.additionalPolicies.slice(0, ((policies.additionalPolicies.length) / 2)) : policies.additionalPolicies}
+              {AdditionalPolicies ? policies[2].additionalpolicies.slice(0, ((policies[2].additionalpolicies.length) / 2)) :policies[2].additionalpolicies}
               {' '}
             </div>
             <div />
@@ -97,7 +102,7 @@ Returns and exchanges accepted
 };
 
 ShopPolicies.propTypes = {
-  policies: PropTypes.objectOf(PropTypes.string).isRequired,
+  // policies: PropTypes.array.isRequired,
   country: PropTypes.string.isRequired,
 };
 
