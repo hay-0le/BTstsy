@@ -12,9 +12,7 @@ pool.on('connect', () => {
   console.log('connected to the db');
 });
 
-/**
- * Create Tables
- */
+
 const createTables = () => {
   const createPolicyTable =
     `CREATE TABLE IF NOT EXISTS
@@ -48,56 +46,12 @@ const createTables = () => {
       pool.end();
     })
     .catch((err) => {
-      console.log("ERROR creating items table:", err);
+      console.log("ERROR creating tables:", err);
       pool.end();
     });
 
-//     const createItemsTable =
-//     `CREATE TABLE IF NOT EXISTS
-//       items(
-//         productid integer CONSTRAINT product_pkey PRIMARY KEY (productid),
-//         vendor character varying(100),
-//         vendorname character varying(100),
-//         vendorcountry character varying(100),
-//         vendorphoto character varying(100),
-//         responsetime character varying(50),
-//         productname character varying(100),
-//         productdescription character varying(200),
-//         policyid integer NOT NULL,
-//         faq character varying(250)
-// );`;
-
-//   pool.query(createItemsTable)
-//     .then((res) => {
-//       console.log(res);
-//       pool.end();
-//     })
-//     .catch((err) => {
-//       console.log("ERROR creating items table:", err);
-//       pool.end();
-//     });
 }
 createTables();
-// /**
-// --  * Drop Tables
-// --  */
-// -- const dropTables = () => {
-// --   const queryText = 'DROP TABLE IF EXISTS reflections';
-// --   pool.query(queryText)
-// --     .then((res) => {
-// --       console.log(res);
-// --       pool.end();
-// --     })
-// --     .catch((err) => {
-// --       console.log(err);
-// --       pool.end();
-// --     });
-// -- }
-
-// -- pool.on('remove', () => {
-// --   console.log('client removed');
-// --   process.exit(0);
-// -- });
 
 
 
@@ -105,83 +59,22 @@ createTables();
 
 
 
+//Query string if needed for testing in pgAdmin
 
-
-
-
-
-
-
-
-
-
-
-
-// -- SET statement_timeout = 0;
-// -- SET lock_timeout = 0;
-// -- SET idle_in_transaction_session_timeout = 0;
-// -- SET client_encoding = 'UTF8';
-// -- SET standard_conforming_strings = on;
-// -- SELECT pg_catalog.set_config('search_path', '', false);
-// -- SET check_function_bodies = false;
-// -- SET xmloption = content;
-// -- SET client_min_messages = warning;
-// -- SET row_security = off;
-
-// -- ------ If table already exists, drop, then create items
-
-// -- -- DROP TABLE public.items;
-
-// -- CREATE SCHEMA public;
-
-
-// -- ALTER SCHEMA public OWNER TO postgres;
 
 // -- DROP TABLE public.items;
 // -- DROP TABLE public.policies;
 
-// -- CREATE TABLE public.items
-// -- (
-// --     productid integer NOT NULL,
-// --     vendor character varying(100) COLLATE pg_catalog."default",
-// --     vendorname character varying(100) COLLATE pg_catalog."default",
-// --     vendorcountry character varying(100) COLLATE pg_catalog."default",
-// --     vendorphoto character varying(100) COLLATE pg_catalog."default",
-// --     responsetime character varying(50) COLLATE pg_catalog."default",
-// --     productname character varying(100) COLLATE pg_catalog."default",
-// --     productdescription character varying(200) COLLATE pg_catalog."default",
-// --     policyid integer NOT NULL,
-// --     faq character varying(250) COLLATE pg_catalog."default"
-// -- );
 
 // -- ALTER TABLE public.items OWNER TO postgres;
 
 
-
-// -- CREATE TABLE public.policies
-// -- (
-// --   policyid integer NOT NULL,
-// --   shippingpolicy character varying(200) COLLATE pg_catalog."default",
-// --   returnpolicy character varying(200) COLLATE pg_catalog."default",
-// --   additionalpolicy character varying(200) COLLATE pg_catalog."default"
-
-// -- );
-
 // -- ALTER TABLE public.policies
 // --     OWNER to postgres;
-
-// -- ALTER TABLE public.items
-// --     ADD CONSTRAINT product_pkey PRIMARY KEY (productid);
-
-// -- 	ALTER TABLE public.policies
-// --     ADD CONSTRAINT policy_pkey PRIMARY KEY (policyid);
-
-
 
 
 // ------- drop index on product id
 // -- DROP INDEX public.index_id;
-
 
 
 // ------ remove dupllicates of keys
