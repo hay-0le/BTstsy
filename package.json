@@ -8,10 +8,11 @@
     "node": ">=6.13.0"
   },
   "scripts": {
-    "start": "nodemon --max_old_space_size=12288 server/index.js",
+    "start": "nodemon server/index.js",
     "build": "webpack -d --watch",
     "seed-csv": "node --max_old_space_size=12288 ./server/database/seed.js",
     "seed-db": "node --max_old_space_size=12288 server/database/pg.js",
+    "build-schema": "node server/database/pgSchema.js",
     "test": "jest",
     "k6": "k6 run k6Scripts.js"
   },
@@ -28,6 +29,7 @@
     "bootstrap": "^4.3.1",
     "csv-write-stream": "^2.0.0",
     "csvtojson": "^2.0.10",
+    "dotenv": "^8.2.0",
     "eslint-plugin-jest": "^22.21.0",
     "express": "^4.17.1",
     "faker": "^4.1.0",
