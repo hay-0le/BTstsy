@@ -19,25 +19,27 @@ const createTables = () => {
   const createPolicyTable =
     `CREATE TABLE IF NOT EXISTS
       policies(
-        policyid integer CONSTRAINT policy_pkey PRIMARY KEY (policyid),
+        policyid integer,
         shippingpolicy character varying(200),
         returnpolicy character varying(200),
-       additionalpolicy character varying(200)
+       additionalpolicy character varying(200),
+       CONSTRAINT policy_pk PRIMARY KEY (policyid)
     );
 
-//     CREATE TABLE IF NOT EXISTS
-//       items(
-//         productid integer CONSTRAINT product_pkey PRIMARY KEY (productid),
-//         vendor character varying(100),
-//         vendorname character varying(100),
-//         vendorcountry character varying(100),
-//         vendorphoto character varying(100),
-//         responsetime character varying(50),
-//         productname character varying(100),
-//         productdescription character varying(200),
-//         policyid integer NOT NULL,
-//         faq character varying(250)
-// )`;
+     CREATE TABLE IF NOT EXISTS
+       items(
+         productid integer,
+         vendor character varying(100),
+         vendorname character varying(100),
+         vendorcountry character varying(100),
+         vendorphoto character varying(100),
+         responsetime character varying(50),
+         productname character varying(100),
+         productdescription character varying(200),
+         policyid integer NOT NULL,
+         faq character varying(250),
+         CONSTRAINT product_pk PRIMARY KEY (productid)
+ )`;
 
   pool.query(createPolicyTable)
     .then((res) => {
