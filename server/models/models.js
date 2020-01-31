@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const connectionString = 'postgressql://postgres:root@localhost:5432/itemsdb';
+const connectionString = `postgres://${process.env.PGUSER}:${process.env.PGPASSWORD}@${process.env.PGHOST}:${process.env.PGPORT}/${process.env.PGDATABASE}`
 
 const pool = new Pool({
   connectionString: connectionString
