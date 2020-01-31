@@ -1,11 +1,13 @@
 # BTetsy
 
-> Rebuild the back-end of a legacy codebase
+> Rebuilt the back-end of a legacy codebase
 
 ## Related Projects
 
 -https://github.com/SDC-PepperJack/Pepperjack-carousel-darjama
+
 -https://github.com/SDC-PepperJack/Pepperjack-checkout-service
+
 -https://github.com/SDC-PepperJack/Pepperjack-reviews-service
 
 ## Table of Contents
