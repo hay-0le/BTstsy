@@ -1,21 +1,20 @@
-require('dotenv').config();
 const copyFrom = require('pg-copy-streams').from;
 const fs = require('fs');
 const { Pool } = require('pg');
-const connectionString = 'postgressql://postgres:root@localhost:5432/itemsdb';
 
+const dotenv = require('dotenv');
+dotenv.config();
+
+
+const connectionString = `postgres://${process.env.PGUSER}:${process.env.PGPASSWORD}@${process.env.PGHOST}:${process.env.PGPORT}/${process.env.PGDATABASE}`
+
+//SEED items TABLE
 console.time('Items loaded into PG database')
 
-// const pool = new Pool({
-//   connectionString: connectionString
-// });
-
 const pool = new Pool({
-  host: process.env.PGHOST,
-  port: process.env.PGPORT,
-  user: process.env.PGUSER,
-  password: process.env.PGPASSWORD
-})
+  connectionString: connectionString
+});
+
 
 pool.connect((err, client, done)=> {
 
@@ -42,4 +41,10 @@ pool.connect((err, client, done)=> {
     console.timeEnd('Items loaded into PG database');
   })
 })
+
+
+
+//SEED policies TABLE
+
+let policies = [];
 
