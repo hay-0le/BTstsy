@@ -2,29 +2,55 @@
 const fs = require('fs');
 const faker = require('faker');
 const { Parser } = require('json2csv');
-// const csv = require('csvtojson');
 
+
+//create array of policy objects
+let policies = [];
+
+let createPolicies = () => {
+  let i = 10;
+
+  do {
+    //create random policies object
+    let policy = {
+      policyid: i,
+      shippingpolicy: faker.lorem.paragraph().slice(0, 170),
+      returnpolicy: faker.lorem.paragraph().slice(0, 170),
+      additionalpolicy: faker.lorem.paragraph().slice(0, 170),
+    }
+
+    policies.push(policy);
+    i--;
+
+  } while (i <= 0)
+
+}
+createPolicies();
+
+
+//Seed items from csv into pgdb
 const writeStream = fs.createWriteStream('data.csv');
 
 console.time('10,000,000 docs loaded');
 
 function csvLoader(writer, encoding, cb) {
-  let i = 10000000;
+  let i = 100;
 
   function seed() {
     let ok = true;
 
     do {
       let item = {
-        vendorName: faker.company.companyName(),
-        vendorFirstName: faker.name.firstName(),
-        vendorCountry: faker.address.country(),
-        vendorPhoto: 'https://loremflickr.com/320/240/dog',
-        vendorResponseTime: Math.floor(Math.random()* 30) + ' days',
-        productId: i,
-        productName: faker.commerce.productName(),
-        productDescription: faker.lorem.paragraph().slice(0, 170),
-        policies : JSON.stringify([{shippingpolicy: faker.lorem.paragraph().slice(0, 70)}, {returnpolicy: faker.lorem.paragraph().slice(0, 80)}, {additionalpolicies: faker.lorem.paragraph().slice(0, 90)}]),
+        productid: i,
+        vendor: faker.company.companyName(),
+        vendorname: faker.name.firstName(),
+        vendorcountry: faker.address.country(),
+        vendorphoto: 'https://loremflickr.com/320/240/dog',
+        responsetime: Math.floor(Math.random()* 30) + ' days',
+
+        productname: faker.commerce.productName(),
+        productdescription: faker.lorem.paragraph().slice(0, 170),
+        policyid: Math.floor(Math.random() * policies.length),
         faq: JSON.stringify([{question: faker.lorem.sentence().slice(0, 20)}, {answer: faker.lorem.sentence().slice(0,60)}])
       }
 
@@ -56,3 +82,9 @@ function csvLoader(writer, encoding, cb) {
 csvLoader(writeStream, 'utf-8', () => {
   writeStream.end();
 })
+
+
+
+module.exports = {
+  policies: policies
+}
