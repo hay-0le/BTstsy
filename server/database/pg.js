@@ -1,6 +1,7 @@
 const copyFrom = require('pg-copy-streams').from;
 const fs = require('fs');
 const { Pool } = require('pg');
+const { policies } = require('./seed.js');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -39,12 +40,10 @@ pool.connect((err, client, done)=> {
     console.log(process.memoryUsage());
     console.log(`CSV imported`)
     console.timeEnd('Items loaded into PG database');
+    pool.end();
   })
 })
 
 
 
-//SEED policies TABLE
-
-let policies = [];
 
