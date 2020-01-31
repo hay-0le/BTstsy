@@ -19,7 +19,7 @@ To render different items in the browser: http:localhost:{ port }/?{ id# 1 - 10M
 
 |CRUD API ENDPOINTS                          | DESCRIPTION                                                          |
 |--------------------------------------------|-----------------------------------------------------------------------
-|GET      /api/description/:productId        | ~~Retrieves product description at productId~~                       |
+|GET      /api/description/:productId        | Retrieves product description at productId                           |
 |~~GET      /api/description~~               | ~~Retrieves all product descriptions from the database~~             |
 |~~POST     /api/description~~               | ~~Adds new product description into the database~~                   |
 |~~PUT      /api/description/:productId~~    | ~~Updates existing product description in the database at productId~~|
