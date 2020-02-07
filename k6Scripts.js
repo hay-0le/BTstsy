@@ -1,3 +1,5 @@
+//FILE SUMMARY: Basic Stress testing on random product id's 1-10,000,000
+
 import { sleep, check } from "k6";
 import http from "k6/http";
 import { Rate, Counter } from "k6/metrics";
