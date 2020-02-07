@@ -11,9 +11,14 @@ const pool = new Pool({
 //Retrieve item by productid
 const getOneItem = (req, res) => {
   const id = req.params.productId;
+  let queryString = `SELECT
+          items.productid, items.vendor, items.vendorname, items.vendorcountry, items.vendorphoto, items.responsetime, items.productname, items.productdescription, policies.shippingpolicy, policies.returnpolicy, policies.additionalpolicy, items.faq
+          FROM items, policies
+          WHERE items.policyid = policies.policyid
+            AND items.productid = $1`;
 
   console.time(`Query for item #${id}`);
-  pool.query('SELECT * FROM items WHERE productid = $1',  [id], (err, results) => {
+  pool.query(queryString, [id], (err, results) => {
     if (err) {
       res.status(404).send('Pool query error retrieving item: ', err)
     }

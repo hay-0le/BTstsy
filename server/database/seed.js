@@ -14,10 +14,10 @@ const { Parser } = require('json2csv');
 let policies = [];
 
 //Creates objects with policy information
+let i = 10;
 let createPolicies = () => {
-  let i = 10;
-
   do {
+    console.log("i", i)
     let policy = {
       policyid: i,
       shippingpolicy: faker.lorem.paragraph().slice(0, 170),
@@ -28,7 +28,7 @@ let createPolicies = () => {
     policies.push(policy);
     i--;
 
-  } while (i <= 0)
+  } while (i >= 0)
 
 }
 createPolicies();
@@ -40,7 +40,7 @@ const writeStream = fs.createWriteStream('data.csv');
 console.time('10,000,000 docs loaded');
 
 function csvLoader(writer, encoding, cb) {
-  let i = 100000000;
+  let i = 50;
 
   function seed() {
     let ok = true;
@@ -57,10 +57,10 @@ function csvLoader(writer, encoding, cb) {
 
         productname: faker.commerce.productName(),
         productdescription: faker.lorem.paragraph().slice(0, 170),
-        policyid: Math.floor(Math.random() * policies.length),
+        policyid: Math.floor(Math.random() * i),
         faq: JSON.stringify([{question: faker.lorem.sentence().slice(0, 20)}, {answer: faker.lorem.sentence().slice(0,60)}])
       }
-
+      console.log("item", item)
       //Data structure will be the same coming out as going in, so remove headers (ie. productid, vendor, etc)
       let parser = new Parser({header: false});
       const csvDetails = parser.parse(item);

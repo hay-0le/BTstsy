@@ -43,9 +43,33 @@ pool.connect((err, client, done)=> {
     console.log(process.memoryUsage());
     console.log(`CSV imported`)
     console.timeEnd('Items loaded into PG database');
-    pool.end();
   })
 })
+
+  for (let policy of policies) {
+    let queryString = `INSERT INTO policies
+      (
+        policyid,
+        shippingpolicy,
+        returnpolicy,
+        additionalpolicy
+      )
+      VALUES ($1, $2, $3, $4)`
+
+
+    pool.query(queryString, [policy.policyid, policy.shippingpolicy, policy.returnpolicy, policy.additionalpolicy])
+      .then((res) => {
+        console.log("Success loading policies into db")
+      })
+      .catch(err => {
+        console.log("ERROR loading policies into db: ". err);
+      })
+
+
+
+  }
+
+
 
 
 

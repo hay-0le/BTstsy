@@ -17,13 +17,17 @@ pool.on('connect', () => {
 
 const createTables = () => {
   const createPolicyTable =
-    `CREATE TABLE IF NOT EXISTS
+
+    `DROP TABLE IF EXISTS policies CASCADE;
+    DROP TABLE IF EXISTS items CASCADE;
+
+    CREATE TABLE IF NOT EXISTS
       policies(
         policyid integer,
         shippingpolicy character varying(200),
         returnpolicy character varying(200),
-       additionalpolicy character varying(200),
-       CONSTRAINT policy_pk PRIMARY KEY (policyid)
+        additionalpolicy character varying(200),
+        CONSTRAINT policy_pk PRIMARY KEY (policyid)
     );
 
      CREATE TABLE IF NOT EXISTS
@@ -39,20 +43,15 @@ const createTables = () => {
          policyid integer NOT NULL,
          faq character varying(250),
          CONSTRAINT product_pk PRIMARY KEY (productid)
-    );
-
-    ALTER TABLE items
-      ADD CONTRAINT policyid_fk FOREIGN KEY (policyid) REFERENCES policies (policyid)`;
+    )`;
 
   pool.query(createPolicyTable)
     .then((res) => {
       console.log(res);
       console.log("success")
-      pool.end();
     })
     .catch((err) => {
       console.log("ERROR creating tables:", err);
-      pool.end();
     });
 
 }
