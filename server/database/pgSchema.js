@@ -1,3 +1,5 @@
+//FILE SUMMARY: Create db connection, and creates policies and items tables
+
 const { Pool } = require('pg');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -59,7 +61,8 @@ createTables();
 
 
 
-//Query string if needed for testing in pgAdmin
+
+//Query strings if needed for testing in pgAdmin
 
 
 // -- DROP TABLE public.items;

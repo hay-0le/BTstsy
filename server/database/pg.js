@@ -1,3 +1,5 @@
+//FILE SUMMARY: Transfer data from CSV to database
+
 const copyFrom = require('pg-copy-streams').from;
 const fs = require('fs');
 const { Pool } = require('pg');
@@ -9,7 +11,7 @@ dotenv.config();
 
 const connectionString = `postgres://${process.env.PGUSER}:${process.env.PGPASSWORD}@${process.env.PGHOST}:${process.env.PGPORT}/${process.env.PGDATABASE}`
 
-//SEED items TABLE
+
 console.time('Items loaded into PG database')
 
 const pool = new Pool({
@@ -18,7 +20,7 @@ const pool = new Pool({
 
 
 pool.connect((err, client, done)=> {
-
+  //Create a read and write streams
   const pgStream = client.query(copyFrom('COPY items FROM STDIN CSV'));
   const fileStream = fs.createReadStream('./data.csv');
 
@@ -34,6 +36,7 @@ pool.connect((err, client, done)=> {
     console.log('Stream ended')
   });
 
+  //"pipe" data from fileStream to pgStream
   fileStream.pipe(pgStream);
 
   fileStream.on('end', () => {
