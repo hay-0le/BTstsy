@@ -39,7 +39,10 @@ const createTables = () => {
          policyid integer NOT NULL,
          faq character varying(250),
          CONSTRAINT product_pk PRIMARY KEY (productid)
- )`;
+    );
+
+    ALTER TABLE items
+      ADD CONTRAINT policyid_fk FOREIGN KEY (policyid) REFERENCES policies (policyid)`;
 
   pool.query(createPolicyTable)
     .then((res) => {
