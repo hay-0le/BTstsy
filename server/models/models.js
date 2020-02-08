@@ -88,10 +88,10 @@ const getOneItem = (req, res) => {
 // }
 
 module.exports = {
-  getOneItem,
-  getAllItems,
-  addItem,
-  updateItem,
-  deleteItem,
+  getOneItem
+  // getAllItems,
+  // addItem,
+  // updateItem,
+  // deleteItem,
 };
 
