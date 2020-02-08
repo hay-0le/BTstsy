@@ -5,7 +5,7 @@ import ShopPolicies from './ShopPolicies.jsx';
 import FaqList from './FaqList.jsx';
 import Messages from './Messages.jsx';
 import sampleData from '../sampleData.js';
-import { LRUCache } from '../../LRUcache.js';
+import { LRUCache } from '../../../server/database/LRUcache.js';
 
 
 
@@ -28,16 +28,24 @@ function App() {
 
   async function fetchData(productId) {
 
-    const res = await axios.get(`/api/description/${productId}`);
-    const tempData = res.data[0];
+    let cachedItem = cache.get(productId);
+    console.log("cached item", cachedItem);
 
-    console.log("hellooo", cache)
-    ;
-    let updatedCache = cache.set(productId, tempData);
-    console.log(updatedCache);
-    setCache(updatedCache);
-    console.log("after cached", cache)
-    setData(tempData);
+    if (cachedItem) {
+      setData(cachedItem);
+
+    } else {
+
+      const res = await axios.get(`/api/description/${productId}`);
+      const tempData = res.data[0];
+
+      console.log("hellooo", cache);
+      let updatedCache = cache.set(productId, tempData);
+      console.log(updatedCache);
+      setCache(updatedCache);
+      console.log("after cached", cache)
+      setData(tempData);
+    }
 
 
   }
