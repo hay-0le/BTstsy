@@ -1,30 +1,64 @@
 //FILE for only API route logic (Retrieve one item from the database)
 
-
+const redis = require('redis')
 const { Pool } = require('pg');
+
+//create pool and connect to postgres
 const connectionString = `postgres://${process.env.PGUSER}:${process.env.PGPASSWORD}@${process.env.PGHOST}:${process.env.PGPORT}/${process.env.PGDATABASE}`
 
 const pool = new Pool({
   connectionString: connectionString
 });
 
+
+
+//create and connect redis client
+const client = redis.createClient();
+
+//Redis error handling
+client.on('error', err => {
+  console.log('ERROR connection to redis: ', err);
+})
+
+
+
 //Retrieve item by productid
 const getOneItem = (req, res) => {
   const id = req.params.productId;
-  let queryString = `SELECT
-          items.productid, items.vendor, items.vendorname, items.vendorcountry, items.vendorphoto, items.responsetime, items.productname, items.productdescription, policies.shippingpolicy, policies.returnpolicy, policies.additionalpolicy, items.faq
-          FROM items, policies
-          WHERE items.policyid = policies.policyid
-            AND items.productid = $1`;
 
-  console.time(`Query for item #${id}`);
-  pool.query(queryString, [id], (err, results) => {
-    if (err) {
-      res.status(404).send('Pool query error retrieving item: ', err)
+
+  //check cache if id has already been searched
+  client.get(`products:${id}`, (err, results) => {
+    if (results) {
+      //if cache returns back product at given id, return to client
+      const product = JSON.parse(results);
+      res.status(200).json(product);
+
+    } else {
+      //product id not in cache ---> Retrieve from postgres
+      let queryString = `SELECT
+              items.productid, items.vendor, items.vendorname, items.vendorcountry, items.vendorphoto, items.responsetime, items.productname, items.productdescription, policies.shippingpolicy, policies.returnpolicy, policies.additionalpolicy, items.faq
+              FROM items, policies
+              WHERE items.policyid = policies.policyid
+                AND items.productid = $1`;
+
+      console.time(`Query for item #${id}`);
+      pool.query(queryString, [id], (err, results) => {
+        if (err) {
+          res.status(404).send('Pool query error retrieving item: ', err)
+        } else {
+          let productData = results.rows;
+          //add to results to cache at id before sending data to client
+          client.setex(`products:${id}`, 3600, JSON.stringify({ source: 'Redis Cache', productData}))
+
+          res.status(200).json(productData)
+          console.timeEnd(`Query for item #${id}`);
+
+        }
+      })
     }
-    res.status(200).json(results.rows)
-    console.timeEnd(`Query for item #${id}`);
   })
+
 }
 
 
